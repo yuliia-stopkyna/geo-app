@@ -10,7 +10,6 @@ load_dotenv()
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         try:
             psycopg2.connect(
@@ -23,6 +22,4 @@ class Command(BaseCommand):
             sleep(5)
             self.handle(*args, **options)
         else:
-            self.stdout.write(
-                self.style.SUCCESS("Connection to database established")
-            )
+            self.stdout.write(self.style.SUCCESS("Connection to database established"))

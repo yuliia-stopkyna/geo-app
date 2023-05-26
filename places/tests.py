@@ -12,18 +12,17 @@ PLACE_URL = reverse("places:place-detail", args=[1])
 
 
 class PlaceTests(TestCase):
-
     @classmethod
     def setUpTestData(cls):
         Place.objects.create(
             name="Eiffel Tower",
             description="Wrought-iron lattice tower on the Champ de Mars in Paris, France.",
-            geom=GEOSGeometry("SRID=4326;POINT(48.858093 2.294694)")
+            geom=GEOSGeometry("SRID=4326;POINT(48.858093 2.294694)"),
         )
         Place.objects.create(
             name="Statue of Liberty",
             description="Sculpture on Liberty Island in New York Harbor in New York City, in the United States.",
-            geom=GEOSGeometry("SRID=4326;POINT(40.689247 -74.044502)")
+            geom=GEOSGeometry("SRID=4326;POINT(40.689247 -74.044502)"),
         )
 
     def setUp(self) -> None:
@@ -41,10 +40,7 @@ class PlaceTests(TestCase):
         data = {
             "name": "Test place",
             "description": "Place description",
-            "geom": {
-                "type": "Point",
-                "coordinates": [48.2222, 2.6665]
-            }
+            "geom": {"type": "Point", "coordinates": [48.2222, 2.6665]},
         }
         response = self.client.post(PLACES_URL, data=data, format="json")
         new_place = Place.objects.filter(name=data["name"])
@@ -66,10 +62,7 @@ class PlaceTests(TestCase):
         data = {
             "name": "Test place",
             "description": "Place description",
-            "geom": {
-                "type": "Point",
-                "coordinates": [48.2222, 2.6665]
-            }
+            "geom": {"type": "Point", "coordinates": [48.2222, 2.6665]},
         }
         response = self.client.put(PLACE_URL, data=data, format="json")
         place = Place.objects.get(id=1)
@@ -80,9 +73,7 @@ class PlaceTests(TestCase):
         self.assertEqual(place.name, data["name"])
 
     def test_partial_update_place(self):
-        data = {
-            "description": "New description"
-        }
+        data = {"description": "New description"}
         response = self.client.patch(PLACE_URL, data=data, format="json")
         place = Place.objects.get(id=1)
         serializer = PlaceSerializer(place)

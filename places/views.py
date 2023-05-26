@@ -28,7 +28,7 @@ class PlaceViewSet(viewsets.ModelViewSet):
             OpenApiParameter(
                 "coords",
                 type=str,
-                description="Get the nearest place to provided coordinates (ex. ?coords=48.87,2.29)"
+                description="Get the nearest place to provided coordinates (ex. ?coords=48.87,2.29)",
             ),
         ]
     )

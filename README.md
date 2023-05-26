@@ -3,6 +3,8 @@
 APi project for working with geospatial data. Interacts with a database table
 of places with id, name, description and coordinates fields.
 
+**API demonstration video**: [link](https://www.loom.com/share/99dd39957a404760b5d6a7f6fafb5d03).
+
 ## Features
 
 * documentation at /api/doc/swagger/

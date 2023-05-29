@@ -8,4 +8,4 @@ app_name = "places"
 router = DefaultRouter()
 router.register("", PlaceViewSet, basename="place")
 
-urlpatterns = [path("", include(router.urls))]
+urlpatterns = router.urls

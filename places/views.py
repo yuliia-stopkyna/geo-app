@@ -1,7 +1,7 @@
-from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets
-import numpy as np
 
 from places.models import Place
 from places.serializers import PlaceSerializer
@@ -9,17 +9,15 @@ from places.serializers import PlaceSerializer
 
 class PlaceViewSet(viewsets.ModelViewSet):
     serializer_class = PlaceSerializer
+    queryset = Place.objects.all()
 
-    def get_queryset(self):
-        queryset = Place.objects.all()
+    def filter_queryset(self, queryset):
         coords = self.request.query_params.get("coords")
 
         if coords:
             x, y = [float(coord.strip()) for coord in coords.split(",")]
-            point = GEOSGeometry(f"SRID=4326;POINT({x} {y})")
-            places_points = [GEOSGeometry(place.geom) for place in queryset]
-            distances = [point.distance(place_point) for place_point in places_points]
-            queryset = queryset.filter(geom=places_points[np.argmin(distances)])
+            point = Point(x, y, srid=4326)
+            queryset = queryset.annotate(distance=Distance("geom", point)).order_by("distance")[:1]
 
         return queryset
 
